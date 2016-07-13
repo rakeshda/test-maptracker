@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script>
+$(document).ready(function(){
+   
+    $.get("/getData", function(data, status){
+      console.log(data);
+      var str = ""
+      //"<div style='left:100px; top:100px; width:20px; height: 20px; background-image: url(../images/dot.png);'></div>"
+      for(var i=0; i<data.length; i++){
+        // console.log(data[i].posX);
+        str += "<div style='position: absolute; left:"+data[i].posX+"px; top:"+data[i].posY+"px; width:10px; height: 10px; background-image: url(../images/dot.png);'></div>"
+      }
+      $("#map1").html(str)
+    });
+    $("#map1").click(function(e){
+      console.log(e.pageX +"<>"+e.pageY);
+      $("#map1").off("click");
+      var str = $("#map1").html();
+      $("#map1").html(str + "<div style='position: absolute; left:"+e.pageX+"px; top:"+e.pageY+"px; width:10px; height: 10px; background-image: url(../images/dot.png);'></div>")
+      $.post("/setData",
+        {
+          mapid: 1,
+          posX: e.pageX,
+          posY: e.pageY
+        });
+    });
+
+    // $("#btnSubmit").click(function(){
+     
+    //     $.post("/setData",
+    //     {
+    //       mapid: $("#mapid").val(),
+    //       posX: $("#posX").val(),
+    //       posY: $("#posY").val()
+    //     },
+    //     function(data,status){
+            
+    //     });
+
+    //     $("#mapid").val('');
+    //     $("#posX").val('');
+    //     $("#posY").val('');
+    // });
+});
+</script>
+  </head>
+  <body style="background-color: #cccccc">
+<!--   MID: <input type="text" id="mapid"><br><br>
+  PosX: <input type="text" id="posX"><br><br>
+  PosY: <input type="text" id="posY"><br><br>
+  <input type="submit" value="Submit" id="btnSubmit">
+ -->
+
+<div id="map1" style="left:0px; top:0px; width:800px; height: 417px; background-image: url('../images/map.jpg')">
+  
+</div>
+  </body>
+</html>
